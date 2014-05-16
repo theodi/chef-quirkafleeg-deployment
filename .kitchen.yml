@@ -37,3 +37,4 @@ suites:
         static:
           port: 4010
           assets_path: 'static'
+          assets_allow_origin: "*"
