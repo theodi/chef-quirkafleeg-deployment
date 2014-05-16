@@ -1,0 +1,80 @@
+<%
+   @canonical_name = "%s.%s" % [
+           @servername,
+           @domain
+   ]
+   if @naked_domain
+     @canonical_name = @domain
+   end
+
+   if @non_odi_hostname
+     @canonical_name = @non_odi_hostname
+   end
+%>
+upstream <%= @servername %> {
+  server 127.0.0.1:<%= @port %>;
+}
+
+server {
+  listen <%= @listen_port %><%= if @default then " default" end %>;
+  server_name <%= @canonical_name %><%=
+    if @aliases then
+      @aliases.map! do |a|
+        "%s.%s" % [
+                a,
+                @domain
+        ]
+      end
+      " %s" % [
+              @aliases.join(" ")
+      ]
+    end
+%>;
+  access_log /var/log/nginx/<%= @servername %>.log;
+  error_log /var/log/nginx/<%= @servername %>.err;
+  root /var/www/<%= @servername %>/current/public/;
+
+  location / {
+    try_files $uri @backend;
+  }
+
+<% if @static_assets %>
+  location ~ ^/(<%= @assets_path %>)/ {
+    gzip_static on; # to serve pre-gzipped version
+    expires max;
+    add_header Cache-Control public;
+  }
+
+<% end %>
+  location @backend {
+    proxy_set_header X-Forwarded-Proto 'http';
+    proxy_set_header Host $server_name;
+    proxy_pass http://<%= @servername %>;
+  }
+<% if @redirects %>
+
+     <% @redirects.each do |source, target| %>
+  <%= "rewrite %s http://%s%s permanent;" % [
+      source,
+      @canonical_name,
+      target
+  ] %>
+     <% end %>
+<% end %>
+}
+<% if @naked_domain %>
+
+server {
+  listen <%= @listen_port %>;
+  server_name <%= @servername %>.<%= @domain %>;
+  rewrite ^/(.*) http://<%= @canonical_name %>/$1 permanent;
+}
+<% end %>
+<% if @catch_and_redirect %>
+
+server {
+  listen <%= @listen_port %>;
+  server_name <%= @catch_and_redirect %>;
+  rewrite ^/(.*) http://<%= @canonical_name %>/$1 permanent;
+}
+<% end %>
