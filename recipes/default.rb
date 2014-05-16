@@ -61,10 +61,11 @@ node['apps'].each_pair do |github_name, attributes|
   end
 
 #  precompile_assets = !attributes.has_key?(:precompile_assets) and true
-  precompile_assets = attributes[:precompile_assets].nil? ? true : attributes[:precompile_assets]
-  assets_path       = attributes[:assets_path].nil? ? 'assets' : attributes[:assets_path]
-  port              = attributes['port']
-  root_dir          = "%s/%s" % [
+  precompile_assets   = attributes[:precompile_assets].nil? ? true : attributes[:precompile_assets]
+  assets_path         = attributes[:assets_path].nil? ? 'assets' : attributes[:assets_path]
+  assets_allow_origin = attributes[:assets_allow_origin]
+  port                = attributes['port']
+  root_dir            = "%s/%s" % [
       deploy_root,
       deploy_name
   ]
@@ -189,6 +190,7 @@ node['apps'].each_pair do |github_name, attributes|
             :domain             => domain,
             :static_assets      => precompile_assets,
             :assets_path        => assets_path,
+            :assets_allow_origin=> assets_allow_origin,
             :listen_port        => node[:nginx][:listen_port],
             :default            => attributes[:is_default],
             :redirects          => attributes[:redirects],
@@ -221,4 +223,3 @@ node['apps'].each_pair do |github_name, attributes|
 #    action :force_deploy
   end
 end
-

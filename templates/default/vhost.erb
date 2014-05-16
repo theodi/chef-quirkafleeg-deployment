@@ -40,6 +40,9 @@ server {
 
 <% if @static_assets %>
   location ~ ^/(<%= @assets_path %>)/ {
+    <% if @assets_allow_origin %>
+      add_header Access-Control-Allow-Origin "<%= @assets_allow_origin %>";
+    <% end %>
     gzip_static on; # to serve pre-gzipped version
     expires max;
     add_header Cache-Control public;
