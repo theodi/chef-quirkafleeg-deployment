@@ -190,7 +190,7 @@ node['apps'].each_pair do |github_name, attributes|
             :domain             => domain,
             :static_assets      => precompile_assets,
             :assets_path        => assets_path,
-            :assets_path        => assets_allow_origin,
+            :assets_allow_origin=> assets_allow_origin,
             :listen_port        => node[:nginx][:listen_port],
             :default            => attributes[:is_default],
             :redirects          => attributes[:redirects],
