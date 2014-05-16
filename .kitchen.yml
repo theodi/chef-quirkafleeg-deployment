@@ -1,0 +1,39 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: ubuntu-14.04
+
+suites:
+  - name: default
+    run_list:
+    - "recipe[git]"
+    - "recipe[odi-users]"
+    - "recipe[odi-rvm]"
+    - "recipe[envbuilder]"
+    - "recipe[odi-nginx]"
+    - "recipe[quirkafleeg-deployment]"
+    data_bags_path: test/data_bags
+    attributes:
+      user: 'quirkafleeg'
+      rvm:
+        user: 'quirkafleeg'
+        ruby: '1.9.3'
+      envbuilder:
+        base_dir: '/home/quirkafleeg'
+        base_dbi: 'production'
+        owner: 'quirkafleeg'
+        group: 'quirkafleeg'
+      project: 'quirkafleeg'
+      govuk:
+        app_domain: "theodi.org"
+      databags:
+        primary: 'quirkafleeg'
+      apps:
+        static:
+          port: 4010
+          assets_path: 'static'
