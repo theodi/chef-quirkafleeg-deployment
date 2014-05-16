@@ -17,7 +17,7 @@ end
 describe file("/etc/nginx/sites-enabled/static") do
   it { should be_file }
   its(:content) { should match /location \~ \^\/\(static\)\// }
-  its(:content) { should_not match /add_header Access-Control-Allow-Origin "\*";/ }
+  its(:content) { should match /add_header Access-Control-Allow-Origin "\*";/ }
 end
 
 # Make sure we have some code
