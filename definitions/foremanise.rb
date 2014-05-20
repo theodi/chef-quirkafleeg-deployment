@@ -6,6 +6,7 @@ define :foremanise, :params => {} do
       user params[:user]
       code <<-EOF
         RVMDIR=/home/#{user}/.rvm
+        $RVMDIR/bin/rvm gemdir # run once to create gemset if required, then run again to get correct output
         GEMDIR=`$RVMDIR/bin/rvm gemdir`
         RUBY=`basename $GEMDIR | cut -d '@' -f 1`
         echo "PATH=$RVMDIR/gems/$RUBY@global/bin:$RVMDIR/rubies/$RUBY/bin/" > /tmp/path_env
