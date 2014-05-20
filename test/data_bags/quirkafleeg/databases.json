@@ -1,6 +1,9 @@
 {
-  "host": "localhost",
-  "root": {
-    "_default": ""
+  "id": "databases",
+  "content": {
+    "host": "localhost",
+    "root": {
+      "_default": ""
+    }
   }
 }
