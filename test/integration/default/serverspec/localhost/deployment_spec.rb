@@ -48,3 +48,7 @@ end
 describe command("curl -H 'Host: static.theodi.org' http://localhost:8080/templates/www.html.erb") do
   it { should return_stdout /About the ODI/ }
 end
+
+describe command("curl -v -H 'Host: static.theodi.org' -H 'Origin: http://project.dapaas.eu' http://localhost:8080/assets/favicon.ico -o /tmp/favicon.ico") do
+  it { should return_stdout /Access-Control-Allow-Origin: \*/ }
+end
