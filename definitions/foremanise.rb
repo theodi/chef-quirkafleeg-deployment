@@ -1,4 +1,18 @@
 define :foremanise, :params => {} do
+
+  script 'Generate foreman path environment' do
+      interpreter 'bash'
+      cwd params[:cwd]
+      user params[:user]
+      code <<-EOF
+        RVMDIR=/home/#{user}/.rvm
+        $RVMDIR/bin/rvm gemdir # run once to create gemset if required, then run again to get correct output
+        GEMDIR=`$RVMDIR/bin/rvm gemdir`
+        RUBY=`basename $GEMDIR | cut -d '@' -f 1`
+        echo "PATH=$RVMDIR/gems/$RUBY@global/bin:$RVMDIR/rubies/$RUBY/bin/" > /tmp/path_env
+      EOF
+  end
+
   script 'Start Me Up' do
     interpreter 'bash'
     cwd params[:cwd]
@@ -10,6 +24,7 @@ define :foremanise, :params => {} do
           -u #{params[:user]} \
           -l /var/log/#{params[:user]}/#{params[:name]} \
           -p #{params[:port]} \
+          -e #{params[:cwd]}/.env,/tmp/path_env \
           upstart /etc/init
     EOF
   end

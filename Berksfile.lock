@@ -55,7 +55,7 @@ GRAPH
   odi-xml (0.1.0)
     xml (>= 0.0.0)
   ohai (2.0.0)
-  quirkafleeg-deployment (0.2.21)
+  quirkafleeg-deployment (0.3.0)
     git (>= 0.0.0)
     nginx (>= 0.0.0)
   rsyslog (1.12.2)

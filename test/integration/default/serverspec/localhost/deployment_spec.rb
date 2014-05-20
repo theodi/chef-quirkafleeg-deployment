@@ -34,6 +34,7 @@ end
 describe file("/etc/init/static-thin-1.conf") do
   its(:content) { should match /SUCH=test/ }
   its(:content) { should match /PORT=4010/ }
+  its(:content) { should match /PATH=\/home\/quirkafleeg\/.rvm\/gems\/ruby-1.9.3-p[0-9]{3}@global\/bin:\/home\/quirkafleeg\/.rvm\/rubies\/ruby-1.9.3-p[0-9]{3}\/bin/}
   its(:content) { should match /bundle exec thin start/ }
 end
 
