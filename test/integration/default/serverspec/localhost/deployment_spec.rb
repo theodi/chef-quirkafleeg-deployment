@@ -16,7 +16,7 @@ end
 # cross-origin is disabled in this suite
 describe file("/etc/nginx/sites-enabled/static") do
   it { should be_file }
-  its(:content) { should match /location \~ \^\/\(static\)\// }
+  its(:content) { should match /location \~ \^\/\(assets\)\// }
   its(:content) { should match /add_header Access-Control-Allow-Origin "\*";/ }
 end
 

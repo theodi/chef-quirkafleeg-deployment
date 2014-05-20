@@ -36,5 +36,5 @@ suites:
       apps:
         static:
           port: 4010
-          assets_path: 'static'
+          assets_path: 'assets'
           assets_allow_origin: "*"
